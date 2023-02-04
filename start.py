@@ -46,7 +46,7 @@ node = sx126x.sx126x(
     relay=False)
 
 with open('/sys/class/thermal/thermal_zone0/temp') as cpu_temp:
-    print(f'CPU temp = {cpu_temp.read() / 1000}C')
+    print(f'CPU temp = {int(cpu_temp.read()) / 1000}C')
 
 data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "Hello World!".encode()
 node.send(data)
