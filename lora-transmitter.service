@@ -3,7 +3,7 @@ Description=Automated Weather Observation System - Transmitter
 After=hciuart.service
 
 [Service]
-ExecStart=/home/pi/projects/lora-awos/start.py --mode=tx --spreading-factor=9 --transmit-power=10 --transmit-interval=1 --address=65535
+ExecStart=/home/pi/projects/lora-awos/start.py --mode=tx --spreading-factor=11 --transmit-power=10 --transmit-interval=1 --address=65535
 Type=simple
 
 [Install]

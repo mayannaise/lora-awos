@@ -2,15 +2,25 @@
 
 # system imports
 import argparse
+import datetime
+import time
 
 # local imports
 import sx126x
 
 
+## @brief Get CPU temperature
+#  @return CPU temperature in degrees Celcius
+def get_cpu_temp():
+    with open('/sys/class/thermal/thermal_zone0/temp') as cpu_temp:
+        cpu_temp_degC = int(cpu_temp.read()) / 1000
+        print(f'CPU temp = {cpu_temp_degC}*C')
+    return cpu_temp_degC
+
 ## commandline parser object
 parser = argparse.ArgumentParser(prog='LoRa AWOS', description='Periodically sends weather report data over LoRa')
 parser.add_argument('-t', '--terminal-id',       type=str, required=False, default='ttyS0', help='Terminal ID')
-parser.add_argument('-s', '--spreading-factor',  type=int, required=True,  default=9,       help='Spreading factor', choices=[7, 8, 9, 10])
+parser.add_argument('-s', '--spreading-factor',  type=int, required=True,  default=9,       help='Spreading factor', choices=[6, 7, 8, 9, 10, 11, 12])
 parser.add_argument('-m', '--mode',              type=str, required=True,  default='tx',    help='Transceiver mode', choices=['tx', 'rx'])
 parser.add_argument('-p', '--transmit-power',    type=int, required=False, default=10,      help='Transmitter power in dBm', choices=[10, 13, 17, 22])
 parser.add_argument('-i', '--transmit-interval', type=int, required=False, default=10,      help='How often in seconds to transmit data')
@@ -45,8 +55,13 @@ node = sx126x.sx126x(
     air_speed=air_speeds[args.spreading_factor],
     relay=False)
 
-with open('/sys/class/thermal/thermal_zone0/temp') as cpu_temp:
-    print(f'CPU temp = {int(cpu_temp.read()) / 1000}C')
+## common header for all LoRa messages
+header = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12])
 
-data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "Hello World!".encode()
-node.send(data)
+# send welcome message first
+node.send(header + 'LoRa AWOS!'.encode())
+
+# then periodically send temperature data until the script/service is stopped
+while True:
+    node.send(header + f'\r{datetime.datetime.now().strftime("%H:%M:%S")} {get_cpu_temp()}'.encode())
+    time.sleep(args.transmit_interval)
