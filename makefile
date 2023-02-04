@@ -15,6 +15,7 @@ setup:
 install_tx:
 	@echo "$(YELLOW)Installing transmitter service$(DEFAULT)"
 	$(AT) sudo systemctl enable $(THIS_DIR)lora-transmitter.service
+	$(AT) sudo systemctl daemon-reload
 	$(AT) sudo systemctl start lora-transmitter.service
 	@echo "$(GREEN)Done$(DEFAULT)"
 
@@ -22,5 +23,6 @@ install_tx:
 install_rx:
 	@echo "$(YELLOW)Installing receiver service$(DEFAULT)"
 	$(AT) sudo systemctl enable $(THIS_DIR)lora-receiver.service
+	$(AT) sudo systemctl daemon-reload
 	$(AT) sudo systemctl start lora-receiver.service
 	@echo "$(GREEN)Done$(DEFAULT)"
