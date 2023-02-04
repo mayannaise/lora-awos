@@ -6,6 +6,14 @@ There are two parts to this system, a transmitter and a receiver.
 The transmitter periodically reads from an array of sensors and transmits the data using a LoRa transmitter.
 As the receiver gets the data, it plots the results on a graph in realtime.
 
+## Prerequisites
+
+Prerequisites can be installed using:
+
+```bash
+make setup
+```
+
 ## Installation
 
 Each component can be installed as a systemd service to enable them to automatically run when the Raspberry PI boots.
