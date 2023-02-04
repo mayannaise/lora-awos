@@ -8,8 +8,7 @@ all:
 .PHONY: setup
 setup:
 	@echo "$(YELLOW)Installing prereqs$(DEFAULT)"
-	$(AT) sudo apt install -y python3-pip python3-rpi.gpio
-	$(AT) pip3 install --user pyserial
+	$(AT) sudo apt install -y python3-pip python3-rpi.gpio python3-serial
 	@echo "$(GREEN)Done$(DEFAULT)"
 
 .PHONY: install_tx
