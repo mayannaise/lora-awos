@@ -1,0 +1,10 @@
+[Unit]
+Description=Automated Weather Observation System - Receiver
+After=multi-user.target
+
+[Service]
+ExecStart=/home/pi/projects/lora-awos/start.py --mode=rx --spreading-factor=9
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
