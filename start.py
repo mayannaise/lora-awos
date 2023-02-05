@@ -55,13 +55,15 @@ node = sx126x.sx126x(
     air_speed=air_speeds[args.spreading_factor],
     relay=False)
 
-## common header for all LoRa messages
-header = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12])
 
-# send welcome message first
-node.send(header + 'LoRa AWOS!'.encode())
+if args.mode == 'tx':
+    ## common header for all LoRa messages
+    header = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12])
 
-# then periodically send temperature data until the script/service is stopped
-while True:
-    node.send(header + f'\r{datetime.datetime.now().strftime("%H:%M:%S")} {get_cpu_temp()}'.encode())
-    time.sleep(args.transmit_interval)
+    # send welcome message first
+    node.send(header + 'LoRa AWOS!'.encode())
+
+    # then periodically send temperature data until the script/service is stopped
+    while True:
+        node.send(header + f'\r{datetime.datetime.now().strftime("%H:%M:%S")} {get_cpu_temp()}'.encode())
+        time.sleep(args.transmit_interval)
