@@ -9,20 +9,13 @@ all:
 setup:
 	@echo "$(YELLOW)Installing prereqs$(DEFAULT)"
 	$(AT) sudo apt install -y python3-pip python3-rpi.gpio python3-serial
+	$(AT) sudo pip3 install adafruit-circuitpython-ssd1306 adafruit-circuitpython-framebuf adafruit-circuitpython-rfm9x
 	@echo "$(GREEN)Done$(DEFAULT)"
 
-.PHONY: install_tx
-install_tx:
-	@echo "$(YELLOW)Installing transmitter service$(DEFAULT)"
-	$(AT) sudo systemctl enable $(THIS_DIR)lora-transmitter.service
+.PHONY: install_service
+install_service:
+	@echo "$(YELLOW)Installing service$(DEFAULT)"
+	$(AT) sudo systemctl enable $(THIS_DIR)lora.service
 	$(AT) sudo systemctl daemon-reload
-	$(AT) sudo systemctl start lora-transmitter.service
-	@echo "$(GREEN)Done$(DEFAULT)"
-
-.PHONY: install_rx
-install_rx:
-	@echo "$(YELLOW)Installing receiver service$(DEFAULT)"
-	$(AT) sudo systemctl enable $(THIS_DIR)lora-receiver.service
-	$(AT) sudo systemctl daemon-reload
-	$(AT) sudo systemctl start lora-receiver.service
+	$(AT) sudo systemctl start lora.service
 	@echo "$(GREEN)Done$(DEFAULT)"
