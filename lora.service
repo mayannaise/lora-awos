@@ -4,6 +4,7 @@ After=hciuart.service
 
 [Service]
 ExecStart=/home/pi/projects/lora-awos/start.py --spreading-factor=9 --bandwidth=125 --transmit-power=10
+WorkingDirectory=/home/pi/projects/lora-awos
 Type=simple
 
 [Install]
